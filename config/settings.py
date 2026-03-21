@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # My apps
-    'django-cors-headers',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'core',
