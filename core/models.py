@@ -62,7 +62,7 @@ class GlobalUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['firstName', 'lastName', 'emailAddress']
     
     def __str__(self):
-        return f"{self.name} ({self.id})"
+        return f"{self.firstName} {self.lastName} ({self.id})"
 
 class Student(models.Model):
     user = models.OneToOneField(GlobalUser, on_delete=models.CASCADE, primary_key=True, db_column='userID')

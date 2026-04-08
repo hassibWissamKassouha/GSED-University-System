@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1']
 
+# أخبر Django أن يثق برابط ngrok الخاص بك
+CSRF_TRUSTED_ORIGINS = [
+    'https://nonfraternal-esther-projective.ngrok-free.dev',
+]
 
 # Application definition
 
