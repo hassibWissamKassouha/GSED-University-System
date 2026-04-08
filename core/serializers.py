@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from core.models import GlobalUser
 
 class LoginSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -12,3 +13,8 @@ class LoginSerializer(serializers.Serializer):
                 raise serializers.ValidationError("هذا الحساب مقفل (Locked).")
             return user
         raise serializers.ValidationError("بيانات الدخول غير صحيحة.")
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalUser
+        fields = ['id', 'username', 'email', 'role', 'isLocked']
