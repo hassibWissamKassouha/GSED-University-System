@@ -20,10 +20,29 @@ class LoginView(APIView):
             }, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-api_view(['GET'])
-permission_classes([IsAuthenticated])
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_user_profile(request):
     user = request.user
-    serializer = UserProfileSerializer(user)
-    return Response(serializer.data)
+    data = {
+        "id": user.id,
+        "username": user.username,
+        "role": user.role,
+        "permissions": list(user.get_all_permissions()), # قائمة بكل صلاحياته التقنية
+    }
 
+    # تخصيص البيانات الإضافية بناءً على الدور (أو الصلاحية)
+    if user.role == 'Student':
+        data['student_info'] = {
+            "GPA": user.student_profile.gpa, # افتراض وجود علاقة OneToOne
+            "year": user.student_profile.academic_year
+        }
+    elif user.role == 'Professor':
+        data['professor_info'] = {
+            "department": user.professor_profile.department,
+            "office_hours": "10AM - 2PM"
+        }
+    elif user.role == 'Admin':
+        data['admin_tools'] = ["user_management", "system_logs", "backups"]
+
+    return Response(data)
